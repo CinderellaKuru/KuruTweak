@@ -28,9 +28,3 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         release_name: "KuruTweak - v${{ env.RELEASE_DATE }}"
         tag_name: "v${{ env.RELEASE_DATE }}"
-
-    - name: Deploy manifestv3
-      uses: owner/repo/deploy-action@v1
-      with:
-        environment: production
-        token: ${{ secrets.GITHUB_TOKEN }}
