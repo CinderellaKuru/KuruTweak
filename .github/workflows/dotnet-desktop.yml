@@ -32,3 +32,9 @@ jobs:
 
     - name: Test
       run: dotnet test --configuration ${{ matrix.configuration }}
+
+    - name: Set release name and tag
+      run: |
+        echo "KuruTweak - $(date +'%Y.%m.%d')" > release_name.txt
+        git tag -a "$(date +'%Y.%m.%d')" -m "Release $(date +'%Y.%m.%d')"
+        git push origin --tags
