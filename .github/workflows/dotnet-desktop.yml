@@ -1,4 +1,4 @@
-name: Build and Test
+name: Automatic Release
 
 on:
   push:
@@ -7,34 +7,27 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
-    
-    strategy:
-      matrix:
-        os: [windows-latest]
-        configuration: [Release]
-        platform: [x64, x86, arm64]
+    runs-on: windows-2019
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '4.7.2'
+      uses: actions/checkout@v3
 
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration ${{ matrix.configuration }} --runtime ${{ matrix.platform }}
+    - name: Build and publish artifact
+      run: dotnet publish --configuration Release --output ./publish
 
-    - name: Test
-      run: dotnet test --configuration ${{ matrix.configuration }}
+    - name: Set date variable
+      id: set_date
+      run: echo "RELEASE_DATE=$(Get-Date -Format 'yyyy.MM.dd')" >> $GITHUB_ENV
 
-    - name: Set release name and tag
-      run: |
-        echo "KuruTweak - $(date +'%Y.%m.%d')" > release_name.txt
-        git tag -a "$(date +'%Y.%m.%d')" -m "Release $(date +'%Y.%m.%d')"
-        git push origin --tags
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        files: ./publish/**
+        token: ${{ secrets.GITHUB_TOKEN }}
+        release_name: "KuruTweak - v${{ env.RELEASE_DATE }}"
+        tag_name: "v${{ env.RELEASE_DATE }}"
