@@ -13,12 +13,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Publish artifact
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build and publish artifact
       run: dotnet publish --configuration Release --output ./publish
 
     - name: Set date variable
       id: set_date
-      run: echo "RELEASE_DATE=$(date +'%Y.%m.%d')" >> $GITHUB_ENV
+      run: echo "RELEASE_DATE=$(Get-Date -Format 'yyyy.MM.dd')" >> $GITHUB_ENV
 
     - name: Create release
       id: create_release
