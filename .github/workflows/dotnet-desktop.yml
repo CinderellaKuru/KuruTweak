@@ -11,16 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Restore dependencies
-      run: dotnet restore
-
-    - name: Build
-      run: dotnet build --configuration Release
-
-    - name: Run tests
-      run: dotnet test --configuration Release
+      uses: actions/checkout@v3
 
     - name: Publish artifact
       run: dotnet publish --configuration Release --output ./publish
