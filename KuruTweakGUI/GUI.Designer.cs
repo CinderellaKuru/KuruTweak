@@ -191,8 +191,8 @@
             this.LabelCacheExp.UseSelectable = true;
             this.LabelCacheExp.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.LabelCacheExp.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            this.LabelCacheExp.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LabelCacheExp_KeyDown);
             this.LabelCacheExp.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LabelCacheExp_KeyPress);
+            this.LabelCacheExp.Validating += new System.ComponentModel.CancelEventHandler(this.LabelCacheExp_Validating);
             // 
             // LabelCacheDirectory
             // 
@@ -275,8 +275,8 @@
             this.LabelCacheSize.UseSelectable = true;
             this.LabelCacheSize.WaterMarkColor = System.Drawing.Color.FromArgb(((int)(((byte)(109)))), ((int)(((byte)(109)))), ((int)(((byte)(109)))));
             this.LabelCacheSize.WaterMarkFont = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Pixel);
-            this.LabelCacheSize.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LabelCacheSize_KeyDown);
             this.LabelCacheSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LabelCacheSize_KeyPress);
+            this.LabelCacheSize.Validating += new System.ComponentModel.CancelEventHandler(this.LabelCacheSize_Validating);
             // 
             // BtnCacheChange
             // 
