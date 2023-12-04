@@ -123,7 +123,12 @@ namespace KuruTweakGUI
 
         private void BtnGithub_Click(object sender, EventArgs e)
         {
-            Process.Start("https://github.com/CinderellaKuru/KuruTweak");
+            var result = MetroMessageBox.Show(this, "Do you want to open the GitHub page in your web browser?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                Process.Start("https://github.com/CinderellaKuru/KuruTweak");
+            }
         }
 
         private void LabelCacheSize_KeyPress(object sender, KeyPressEventArgs e)
