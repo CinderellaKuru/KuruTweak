@@ -52,6 +52,7 @@ namespace KuruTweakGUI
                 }
             }
 
+            manager.LoadConfigFromFile(manager.GetConfigPath());
             RefreshUI();
         }
 
@@ -69,7 +70,6 @@ namespace KuruTweakGUI
                     if (openFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         manager.LoadConfigFromFile(openFileDialog.FileName);
-
                         RefreshUI();
                     }
                 }
@@ -82,15 +82,15 @@ namespace KuruTweakGUI
 
         private void BtnConfigNew_Click(object sender, EventArgs e)
         {
-            manager.SaveConfigToFile();
             BtnConfigNew.Enabled = false;
-
+            manager.SaveConfigToFile();
             RefreshUI();
         }
 
         private void ToggleDRP_CheckedChanged(object sender, EventArgs e)
         {
             manager.Configuration.DisableRichPresence = !ToggleDRP.Checked;
+            manager.SaveConfigToFile();
         }
 
         private void BtnConfigSave_Click(object sender, EventArgs e)
@@ -100,7 +100,25 @@ namespace KuruTweakGUI
 
         private void BtnCacheChange_Click(object sender, EventArgs e)
         {
+            try
+            {
+                using (FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog())
+                {
+                    folderBrowserDialog.SelectedPath = manager.Configuration.CacheDirectory;
+                    folderBrowserDialog.Description = "Select the new cache directory.";
 
+                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        manager.Configuration.CacheDirectory = folderBrowserDialog.SelectedPath;
+                        manager.SaveConfigToFile();
+                        RefreshUI();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error changing cache directory: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnGithub_Click(object sender, EventArgs e)
@@ -118,11 +136,6 @@ namespace KuruTweakGUI
             }
         }
 
-        private void LabelCacheSize_KeyDown(object sender, KeyEventArgs e)
-        {
-            manager.Configuration.CacheSize = int.Parse(LabelCacheSize.Text);
-        }
-
         private void LabelCacheExp_KeyPress(object sender, KeyPressEventArgs e)
         {
             base.OnKeyPress(e);
@@ -133,9 +146,14 @@ namespace KuruTweakGUI
             }
         }
 
-        private void LabelCacheExp_KeyDown(object sender, KeyEventArgs e)
+        private void LabelCacheSize_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            manager.Configuration.CacheExpiryDelay = int.Parse(LabelCacheExp.Text);
+            manager.Configuration.CacheSize = int.Parse(LabelCacheSize.Text);
+        }
+
+        private void LabelCacheExp_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            manager.Configuration.CacheSize = int.Parse(LabelCacheSize.Text);
         }
     }
 }
